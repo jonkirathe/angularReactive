@@ -8,7 +8,6 @@ import { LayoutComponent } from "./shared/layout/layout.component";
     template: `
     <app-layout></app-layout>
   `,
-    styleUrls: ['./app.component.scss'],
     imports: [CommonModule, LayoutComponent]
 })
 export class AppComponent {
