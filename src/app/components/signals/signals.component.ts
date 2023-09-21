@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {ChangeDetectionStrategy, Component, computed, effect, signal} from "@angular/core";
+import { Product } from 'src/app/models/product';
+import { Cart } from 'src/app/models/cart';
 
 
 @Component({
@@ -75,9 +77,9 @@ import {ChangeDetectionStrategy, Component, computed, effect, signal} from "@ang
                           *ngFor="let product of products(); let index = index"
                         >
                           <td>{{ index + 1 }}</td>
-                          <td>{{ product.name }}</td>
+                          <td>{{ product.title }}</td>
                           <td>{{ product.price | currency : ' KES ' }}</td>
-                          <td>{{ product.qty }}</td>
+                          <td>{{ product.quantity }}</td>
                           <td>{{ product.description }}</td>
                           <select
                             (change)="
@@ -126,16 +128,16 @@ export class SignalsComponent {
   products = signal<Product[]>([
     {
       id: 1,
-      name: 'Elephant',
-      qty: 10,
+      title: 'Elephant',
+      quantity: 10,
       price: 1000000,
       description:
         'Elephants are the largest living land animals. ',
     },
     {
       id: 2,
-      name: 'Giraffe',
-      qty: 15,
+      title: 'Giraffe',
+      quantity: 15,
       price: 600000,
       description:
         'The giraffe is a large African hoofed mammal',
@@ -158,12 +160,12 @@ export class SignalsComponent {
     this.totalQuantity.update((qty) => qty + this.quantity());
     this.totalPrice.update((price) => price + this.quantity() * product.price);
     this.products.mutate(
-      (product) => (product[index].qty = product[index].qty - this.quantity())
+      (product) => (product[index].quantity = product[index].quantity - this.quantity())
     );
     this.cart.mutate((value) =>
       value.push({
         id: product.id,
-        name: product.name,
+        name: product.title,
         qty: this.quantity(),
         price: product.price,
       })
@@ -174,20 +176,5 @@ export class SignalsComponent {
   deleteCartItem(index: number) {
     this.cart.mutate((v) => v.splice(index, 1));
   }
-}
-
-export interface Product {
-  id: number;
-  name: string;
-  qty: number;
-  price: number;
-  description: string
-}
-
-export interface Cart {
-  id: number;
-  name: string;
-  qty: number;
-  price: number;
 }
 

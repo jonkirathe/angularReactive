@@ -1,13 +1,32 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CountDownTimerComponent } from '@kirathe/count-down-timer';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CountDownTimerComponent],
   template: `
     <nav class="navbar navbar-expand-lg navbar-brand bg-color">
       <a class="navbar-brand bg-color" href="#">Angular Reactive</a>
+      <count-down-timer
+            [countDownTimerTemplate]="timerTemplate"
+            [dDay]="date"
+          ><ng-template
+            #timerTemplate
+            let-days="daysToDDay"
+            let-hours="hoursToDDay"
+            let-minutes="minutesToDDay"
+            let-seconds="secondsToDDay"
+          >
+            <label class="text-danger"
+              >Count Down To The Next Release: {{ days }}
+              <a class="h6"
+                >Day(s) {{ hours }}: {{ minutes }}: {{ seconds }}</a
+              ></label
+            >
+          </ng-template>
+        </count-down-timer>
       <button
         class="navbar-toggler"
         type="button"
@@ -47,6 +66,7 @@ import { CommonModule } from '@angular/common';
 })
 export class HeaderComponent {
   navbarOpen = false;
+  date = new Date('2023-12-06 04:29:40');
 
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
